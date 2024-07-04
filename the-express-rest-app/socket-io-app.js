@@ -15,7 +15,11 @@ const io = new Server(server);
 //middleware to serve static files from public folder
 app.use(express.static('public'));
 
+const clientSockets = [];
+
 io.on('connection', (socket) => {
+
+    clientSockets.push(socket);
     console.log(chalk.whiteBright("A new client has connected"));
 
     //send message to client
@@ -23,10 +27,20 @@ io.on('connection', (socket) => {
 
     socket.on("data", (data) => {
         console.log(chalk.yellowBright(`Data received from client: ${data}`));
+        //broadcast to all clients
+        clientSockets.forEach((s) => {
+            if(s != null) {
+                s.emit('message', data);
+            }
+        })
     })
 
     socket.on('disconnect', () => {
         console.log(chalk.redBright('The client has disconnected'));
+        const index = clientSockets.findIndex((s) => s === socket);
+        if(index !== -1) {
+            clientSockets.splice(index, 1);
+        }
     })
 
 });
