@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/socket.io/socket.io.js"></script>
+    <title>Socket-io</title>
+</head>
+<body>
+    <h3>Socket io client</h3>
+
+    <div>
+        <input type="text" id="message" placeholder="Enter message">
+    </div>
+    <div>
+        <button id="send" onclick="sendMessage()">Send</button>
+    </div>
+    <div id="results"></div>
+    <script>
+        const socket = io('http://localhost:9040');
+        const results = document.getElementById('results');
+        socket.on('connect', () => {
+            results.innerHTML += '<p style="color: blue">Connected to server</p>';
+        });
+
+        socket.on("message", (data) => {
+            results.innerHTML += `<p style="color: green">server says: ${data}</p>`;
+        });
+
+        function sendMessage(){
+            const msgInput = document.getElementById('message').value;
+            socket.emit('data', msgInput);
+        }
+    </script>
+</body>
+</html>
