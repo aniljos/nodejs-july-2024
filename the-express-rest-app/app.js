@@ -6,6 +6,7 @@ import { productRestDBRouter } from './controllers/product-rest-db-controller.js
 import cors from 'cors';
 import {Worker} from 'worker_threads';
 import childprocess from 'child_process';
+import { authRouter } from './controllers/auth-controller.js';
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use((req, resp, next) => {
     next();
 });
 
+app.use("/auth", authRouter);
 app.use("/products", productRestRouter);
 app.use("/productsdb", productRestDBRouter);
 

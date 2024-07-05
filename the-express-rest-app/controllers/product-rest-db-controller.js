@@ -1,8 +1,12 @@
 import {Router} from 'express';
 import {createProduct, fetchAllProducts,updateProduct, deleteProduct, fetchProductById} from '../repository/product-db-repository.js';
 import bodyParser from 'body-parser';
+import { verifyMiddleware } from '../middleware/verifyToken.js';
 export const productRestDBRouter = Router();
 
+
+//verfy jwt token
+productRestDBRouter.use(verifyMiddleware);
 //middleware for converting json to js objects
 productRestDBRouter.use(bodyParser.json());;
 //fetch all products
