@@ -1,7 +1,12 @@
 import {MongoClient} from 'mongodb';
 import chalk from 'chalk';
+import {config} from 'dotenv';
 
-const url = 'mongodb://localhost:27017';
+const env = process.env.NODE_ENV;
+config({path: `.env.${env}`});
+
+//const url = 'mongodb://localhost:27017';
+const url = process.env.MONGO_DB_URL || process.env.MONGO_URI;
 const dbName = 'productsdb';
 const collectionName = 'products';
 
